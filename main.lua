@@ -2,7 +2,9 @@
 --PROJECT：ascii string类型，可以随便定义，只要不使用,就行
 --VERSION：ascii string类型，如果使用Luat物联云平台固件升级的功能，必须按照"X.X.X"定义，X表示1位数字；否则可随便定义
 PROJECT = "SMS_FW_UART"
-VERSION = "0.0.1"
+VERSION = "1.0.0"
+
+
 
 --加载日志功能模块，并且设置日志输出等级
 --如果关闭调用log模块接口输出的日志，等级设置为log.LOG_SILENT即可
@@ -21,7 +23,7 @@ require "sys"
 require "net"
 --每1分钟查询一次GSM信号强度
 --每1分钟查询一次基站信息
-net.startQueryAll(60000, 60000)
+--net.startQueryAll(60000, 60000)
 
 --此处关闭RNDIS网卡功能
 --否则，模块通过USB连接电脑后，会在电脑的网络适配器中枚举一个RNDIS网卡，电脑默认使用此网卡上网，导致模块使用的sim卡流量流失
@@ -48,8 +50,8 @@ netLed.setup(true,pio.P0_1,pio.P0_4)
 
 --加载错误日志管理功能模块【强烈建议打开此功能】
 --如下2行代码，只是简单的演示如何使用errDump功能，详情参考errDump的api
-require "errDump"
-errDump.request("udp://dev_msg1.openluat.com:12425", nil, true)
+--require "errDump"
+--errDump.request("udp://dev_msg1.openluat.com:12425", nil, true)
 
 --加载远程升级功能模块【强烈建议打开此功能，如果使用了阿里云的OTA功能，可以不打开此功能】
 --如下3行代码，只是简单的演示如何使用update功能，详情参考update的api以及demo/update
@@ -57,9 +59,11 @@ errDump.request("udp://dev_msg1.openluat.com:12425", nil, true)
 --require "update"
 --update.request()
 
---加载短信功能测试模块
+--加载配置文件、USB AT串口打印、短信收发功能、软狗
+require "cfg"
+require "usbuart"
 require "smsfw"
-
+require "dog"
 
 --启动系统框架
 sys.init(0, 0)
